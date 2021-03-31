@@ -22,11 +22,11 @@ public class AnswerService {
         this.questionRepository = questionRepository;
     }
 
-    public void save(Long questionId, Answer answer, User sessionedUser) {
+    public Answer save(Long questionId, Answer answer, User sessionedUser) {
         Question question = questionRepository.findById(questionId).orElseThrow(() ->
                 new EntityNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
         answer.save(sessionedUser, question);
-        answerRepository.save(answer);
+        return answerRepository.save(answer);
     }
 
     public void update(Long answerId, Answer updatedAnswer, User sessionedUser) {
