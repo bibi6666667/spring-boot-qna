@@ -1,5 +1,7 @@
 package com.codessquad.qna.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     @OrderBy("id ASC")
+    @JsonIgnore
     private List<Answer> answers;
 
     @Column(columnDefinition = "boolean default false")
