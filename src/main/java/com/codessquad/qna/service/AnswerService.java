@@ -35,10 +35,10 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
-    public void delete(Long answerId, User sessionedUser) {
+    public Answer delete(Long answerId, User sessionedUser) {
         Answer answer = getAnswer(answerId, sessionedUser);
         answer.delete();
-        answerRepository.save(answer);
+        return answerRepository.save(answer);
     }
 
     public Answer getAnswer(Long answerId, User sessionedUser) {

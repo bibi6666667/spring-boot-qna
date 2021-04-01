@@ -2,10 +2,7 @@ package com.codessquad.qna.controller;
 
 import com.codessquad.qna.model.Answer;
 import com.codessquad.qna.service.AnswerService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,4 +24,8 @@ public class ApiAnswerController {
         return answerService.save(questionId, answer, getUserFromSession(session));
     }
 
+    @DeleteMapping("/{id}")
+    public Answer delete(@PathVariable Long questionId, @PathVariable Long id, HttpSession session) {
+        return answerService.delete(id, getUserFromSession(session));
+    }
 }
