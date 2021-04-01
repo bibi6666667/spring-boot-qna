@@ -1,6 +1,5 @@
 package com.codessquad.qna.controller;
 
-import com.codessquad.qna.model.Answer;
 import com.codessquad.qna.model.dto.AnswerDto;
 import com.codessquad.qna.service.AnswerService;
 import org.springframework.web.bind.annotation.*;
