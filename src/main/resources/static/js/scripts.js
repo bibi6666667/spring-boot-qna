@@ -28,6 +28,12 @@ function onError() {
 function onSuccess(data, status) { // answer 데이터, 상태
     // 객체의 getter 메서드에 대해서만 json데이터로 바꿔진다.
     console.log(data);
+    var answerTemplate = $("#answerTemplate").html();
+    var template = answerTemplate.format(data.writer.userId, data.dateTime, data.contents, data.id, data.id);
+    // questionDetail.html의 id=answerTemplate 부분에 인자를 전달. 첫 번쨰 인자는 {0}, 두 번쨰 인자는 {1} .. 에 전달
+    // 아래의 String.prototype.format를 실행한다.
+    $(".qna-comment-slipp-articles").prepend(template);
+    $(".answer-write textarea").val("");
 }
 
 String.prototype.format = function() {
