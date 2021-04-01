@@ -3,7 +3,7 @@ package com.codessquad.qna.model.dto;
 import com.codessquad.qna.exception.EntityNotCreateException;
 import com.codessquad.qna.model.User;
 
-public class UserDto {
+public class UserDto extends AbstractDTO{
 
     private Long id;
 
