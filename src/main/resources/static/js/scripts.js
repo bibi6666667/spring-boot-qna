@@ -24,6 +24,12 @@ function onError() {
 
 }
 
+function updateAnswerCount() {
+    let linkDeleteArticle = document.querySelectorAll('a.link-delete-article');
+    let qnaCommentCount = document.querySelector(".qna-comment-count strong");
+    qnaCommentCount.textContent = linkDeleteArticle.length;
+}
+
 function onSuccess(data, status) { // answer 데이터, 상태
     // 객체의 getter 메서드에 대해서만 json데이터로 바꿔진다.
     console.log(data);
@@ -34,6 +40,7 @@ function onSuccess(data, status) { // answer 데이터, 상태
     $(".qna-comment-slipp-articles").prepend(template);
     $(".answer-write textarea").val("");
     $("a.link-delete-article").click(deleteAnswer);
+    updateAnswerCount();
 }
 
 $("a.link-delete-article").click(deleteAnswer); // a태그의 link-delete-article를 클릭이벤트 걸기
@@ -57,6 +64,7 @@ function deleteAnswer(e) { // =이벤트
             if (data.deleted) { // 데이터가 유효하면
                 deleteButton.closest("article").remove();
                 alert("삭제 완료!")
+                updateAnswerCount();
             } else {
                 alert("삭제 오류");
             }
