@@ -27,7 +27,7 @@ public class Question {
     private String contents;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-    @OrderBy("id ASC")
+    @OrderBy("id DESC")
     @JsonIgnore
     private List<Answer> answers;
 
