@@ -4,7 +4,7 @@ import com.codessquad.qna.exception.EntityNotCreateException;
 import com.codessquad.qna.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class UserDto {
+public class UserDto extends AbstractDTO{
 
     private Long id;
 

@@ -6,7 +6,7 @@ import com.codessquad.qna.model.Answer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class AnswerDto {
+public class AnswerDto extends AbstractDTO{
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
