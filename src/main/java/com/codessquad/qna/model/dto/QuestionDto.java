@@ -3,6 +3,7 @@ package com.codessquad.qna.model.dto;
 import com.codessquad.qna.exception.EntityNotCreateException;
 import com.codessquad.qna.model.Answer;
 import com.codessquad.qna.model.Question;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,7 @@ public class QuestionDto extends AbstractDTO{
 
     private String contents;
 
+    @JsonIgnore
     private List<Answer> answers;
 
     private boolean deleted;

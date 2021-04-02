@@ -2,6 +2,7 @@ package com.codessquad.qna.model.dto;
 
 import com.codessquad.qna.exception.EntityNotCreateException;
 import com.codessquad.qna.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDto extends AbstractDTO{
 
@@ -9,6 +10,7 @@ public class UserDto extends AbstractDTO{
 
     private String userId;
 
+    @JsonIgnore
     private String password;
 
     private String name;
