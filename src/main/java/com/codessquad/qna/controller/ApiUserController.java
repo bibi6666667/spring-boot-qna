@@ -1,6 +1,6 @@
 package com.codessquad.qna.controller;
 
-import com.codessquad.qna.model.User;
+import com.codessquad.qna.model.dto.UserDto;
 import com.codessquad.qna.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ public class ApiUserController {
     }
 
     @GetMapping("/{id}")
-    public User show(@PathVariable Long id) {
+    public UserDto show(@PathVariable Long id) {
         return userService.findById(id);
     }
 }

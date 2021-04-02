@@ -24,11 +24,12 @@ public class AnswerService {
         this.questionRepository = questionRepository;
     }
 
-    public void save(Long questionId, AnswerDto answerDto, UserDto sessionedUserDto) {
+    public AnswerDto save(Long questionId, AnswerDto answerDto, UserDto sessionedUserDto) {
         Question question = questionRepository.findById(questionId).orElseThrow(() ->
                 new EntityNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
         answerDto.save(sessionedUserDto, new QuestionDto(question));
         answerRepository.save(answerDto.toEntity());
+        return answerDto;
     }
 
     public void update(Long answerId, AnswerDto updatedAnswerDto, UserDto sessionedUserDto) {
@@ -37,10 +38,11 @@ public class AnswerService {
         answerRepository.save(answerDto.toEntity());
     }
 
-    public void delete(Long answerId, UserDto sessionedUserDto) {
+    public AnswerDto delete(Long answerId, UserDto sessionedUserDto) {
         AnswerDto answerDto = getAnswer(answerId, sessionedUserDto);
         answerDto.delete();
         answerRepository.save(answerDto.toEntity());
+        return answerDto;
     }
 
     public AnswerDto getAnswer(Long answerId, UserDto sessionedUserDto) {
