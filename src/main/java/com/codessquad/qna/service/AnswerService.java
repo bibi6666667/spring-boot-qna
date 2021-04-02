@@ -4,9 +4,8 @@ import com.codessquad.qna.exception.EntityNotFoundException;
 import com.codessquad.qna.exception.IllegalUserAccessException;
 import com.codessquad.qna.model.Answer;
 import com.codessquad.qna.model.Question;
+import com.codessquad.qna.model.User;
 import com.codessquad.qna.model.dto.AnswerDto;
-import com.codessquad.qna.model.dto.QuestionDto;
-import com.codessquad.qna.model.dto.UserDto;
 import com.codessquad.qna.repository.AnswerRepository;
 import com.codessquad.qna.repository.QuestionRepository;
 import com.codessquad.qna.exception.ErrorMessage;
@@ -24,34 +23,34 @@ public class AnswerService {
         this.questionRepository = questionRepository;
     }
 
-    public AnswerDto save(Long questionId, AnswerDto answerDto, UserDto sessionedUserDto) {
+    public AnswerDto save(Long questionId, AnswerDto answerDto, User sessionedUser) {
         Question question = questionRepository.findById(questionId).orElseThrow(() ->
                 new EntityNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
-        answerDto.save(sessionedUserDto, new QuestionDto(question));
-        answerRepository.save(answerDto.toEntity());
-        return answerDto;
+        Answer answer = answerDto.toEntity();
+        answer.save(sessionedUser, question);
+        answerRepository.save(answer);
+        return new AnswerDto(answer);
     }
 
-    public void update(Long answerId, AnswerDto updatedAnswerDto, UserDto sessionedUserDto) {
-        AnswerDto answerDto = getAnswer(answerId, sessionedUserDto);
-        answerDto.update(updatedAnswerDto);
-        answerRepository.save(answerDto.toEntity());
+    public void update(Long answerId, AnswerDto updatedAnswerDto, User sessionedUser) {
+        Answer answer = getAnswer(answerId, sessionedUser);
+        answer.update(updatedAnswerDto.toEntity());
+        answerRepository.save(answer);
     }
 
-    public AnswerDto delete(Long answerId, UserDto sessionedUserDto) {
-        AnswerDto answerDto = getAnswer(answerId, sessionedUserDto);
-        answerDto.delete();
-        answerRepository.save(answerDto.toEntity());
-        return answerDto;
+    public AnswerDto delete(Long answerId, User sessionedUser) {
+        Answer answer = getAnswer(answerId, sessionedUser);
+        answer.delete();
+        answerRepository.save(answer);
+        return new AnswerDto(answer);
     }
 
-    public AnswerDto getAnswer(Long answerId, UserDto sessionedUserDto) {
+    public Answer getAnswer(Long answerId, User sessionedUser) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(() ->
                 new EntityNotFoundException(ErrorMessage.ANSWER_NOT_FOUND));
-        AnswerDto answerDto = new AnswerDto(answer);
-        if (!answerDto.matchWriter(sessionedUserDto)) {
+        if (!answer.matchWriter(sessionedUser)) {
             throw new IllegalUserAccessException();
         }
-        return answerDto;
+        return answer;
     }
 }

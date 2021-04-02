@@ -3,10 +3,14 @@ package com.codessquad.qna.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
 public class Question {
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,13 +40,38 @@ public class Question {
 
     public Question() {}
 
-    public Question(Long id, User writer, String dateTime, String title, String contents, boolean deleted) {
-        this.id = id;
-        this.writer = writer;
-        this.dateTime = dateTime;
+    public Question(String title, String contents) {
         this.title = title;
         this.contents = contents;
-        this.deleted = deleted;
+    }
+
+    public void save(User user) {
+        this.writer = user;
+        this.dateTime = LocalDateTime.now().format(dateTimeFormatter);
+    }
+
+    public void update(Question quesion) {
+        this.title = quesion.getTitle();
+        this.contents = quesion.getContents();
+    }
+
+    public boolean delete() {
+        if (verifyAnswers() != 0) {
+            return false;
+        }
+        this.deleted = true;
+        answers.forEach(Answer::delete);
+        return true;
+    }
+
+    public int verifyAnswers() {
+        return (int) answers.stream()
+                .filter(answer -> !answer.isDeleted() && !answer.matchWriter(writer))
+                .count();
+    }
+
+    public boolean matchWriter(User user) {
+        return user.matchUserId(writer.getUserId());
     }
 
     public Long getId() {

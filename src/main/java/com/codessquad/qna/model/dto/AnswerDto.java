@@ -8,8 +8,6 @@ import java.time.format.DateTimeFormatter;
 
 public class AnswerDto {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     private Long id;
 
     private QuestionDto question;
@@ -34,28 +32,10 @@ public class AnswerDto {
     }
 
     public Answer toEntity() {
-        if (question == null || writer == null || contents == null || dateTime == null) {
+        if (contents == null) {
             throw new EntityNotCreateException();
         }
-        return new Answer(id, question.toEntity(), writer.toEntity(), contents, dateTime, deleted);
-    }
-
-    public void save(UserDto writerDto, QuestionDto questionDto) {
-        this.writer = writerDto;
-        this.question = questionDto;
-        this.dateTime = LocalDateTime.now().format(dateTimeFormatter);
-    }
-
-    public void update(AnswerDto answerDto) {
-        this.contents = answerDto.contents;
-    }
-
-    public void delete() {
-        this.deleted = true;
-    }
-
-    public boolean matchWriter(UserDto userDto) {
-        return userDto.matchUserId(writer.getUserId());
+        return new Answer(contents);
     }
 
     public Long getId() {

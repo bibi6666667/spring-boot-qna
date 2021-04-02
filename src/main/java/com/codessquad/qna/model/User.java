@@ -26,12 +26,29 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String userId, String password, String name, String email) {
-        this.id = id;
+    public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public void update(User user) {
+        this.password = user.password;
+        this.name = user.name;
+        this.email = user.email;
+    }
+
+    public boolean matchId(Long id) {
+        return this.id.equals(id);
+    }
+
+    public boolean matchUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
     }
 
     public Long getId() {

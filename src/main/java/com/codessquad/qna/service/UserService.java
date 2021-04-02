@@ -22,32 +22,32 @@ public class UserService {
     }
 
     public void save(UserDto userDto) {
-        if (userRepository.findByUserId(userDto.getUserId()).isPresent()) {
+        User user = userDto.toEntity();
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
             throw new UserAccountException(ErrorMessage.DUPLICATED_ID);
         }
         userRepository.save(userDto.toEntity());
     }
 
-    public UserDto login(String userId, String password) {
-        User user = userRepository.findByUserIdAndPassword(userId, password).orElseThrow(
+    public User login(String userId, String password) {
+        return userRepository.findByUserIdAndPassword(userId, password).orElseThrow(
                 () -> new UserAccountException(ErrorMessage.LOGIN_FAILED));
-        return new UserDto(user);
     }
 
-    public void update(Long id, UserDto targetUserDto, String currentPassword, UserDto sessionedUserDto) {
-        UserDto userDto = verifyUser(id, sessionedUserDto);
-        if (!userDto.matchPassword(currentPassword)) {
+    public void update(Long id, UserDto targetUserDto, String currentPassword, User sessionedUser) {
+        User user = verifyUser(id, sessionedUser);
+        if (!user.matchPassword(currentPassword)) {
             throw new UserAccountException(ErrorMessage.WRONG_PASSWORD);
         }
-        userDto.update(targetUserDto);
-        userRepository.save(userDto.toEntity());
+        user.update(targetUserDto.toEntity());
+        userRepository.save(user);
     }
 
-    public UserDto verifyUser(Long id, UserDto sessionedUserDto) {
-        if (!sessionedUserDto.matchId(id)) {
+    public User verifyUser(Long id, User sessionedUser) {
+        if (!sessionedUser.matchId(id)) {
             throw new IllegalUserAccessException();
         }
-        return sessionedUserDto;
+        return sessionedUser;
     }
 
     public UserDto findById(Long id) {

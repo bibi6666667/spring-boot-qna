@@ -11,8 +11,6 @@ import java.util.List;
 
 public class QuestionDto {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     private Long id;
 
     private UserDto writer;
@@ -41,39 +39,10 @@ public class QuestionDto {
     }
 
     public Question toEntity() {
-        if (writer == null || dateTime == null || title == null || contents == null) {
+        if (title == null || contents == null) {
             throw new EntityNotCreateException();
         }
-        return new Question(id, writer.toEntity(), dateTime, title, contents, deleted);
-    }
-
-    public void save(UserDto userDto) {
-        this.writer = userDto;
-        this.dateTime = LocalDateTime.now().format(dateTimeFormatter);
-    }
-
-    public void update(QuestionDto questionDto) {
-        this.title = questionDto.getTitle();
-        this.contents = questionDto.getContents();
-    }
-
-    public boolean delete() {
-        if (verifyAnswers() != 0) {
-            return false;
-        }
-        this.deleted = true;
-        answers.forEach(Answer::delete);
-        return true;
-    }
-
-    public int verifyAnswers() {
-        return (int) answers.stream()
-                .filter(answer -> !answer.isDeleted() && !answer.matchWriter(writer))
-                .count();
-    }
-
-    public boolean matchWriter(UserDto userDto) {
-        return userDto.matchUserId(writer.getUserId());
+        return new Question(title, contents);
     }
 
     public int getAnswersCount() {

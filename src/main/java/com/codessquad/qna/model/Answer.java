@@ -1,11 +1,13 @@
 package com.codessquad.qna.model;
 
-import com.codessquad.qna.model.dto.UserDto;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Answer {
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,21 +33,26 @@ public class Answer {
 
     public Answer() {}
 
-    public Answer(Long id, Question question, User writer, String contents, String dateTime, boolean deleted) {
-        this.id = id;
-        this.question = question;
-        this.writer = writer;
+    public Answer(String contents) {
         this.contents = contents;
-        this.dateTime = dateTime;
-        this.deleted = deleted;
     }
 
-    public boolean matchWriter(UserDto userDto) {
-        return userDto.matchUserId(writer.getUserId());
+    public void save(User writer, Question question) {
+        this.writer = writer;
+        this.question = question;
+        this.dateTime = LocalDateTime.now().format(dateTimeFormatter);
+    }
+
+    public void update(Answer answer) {
+        this.contents = answer.contents;
     }
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public boolean matchWriter(User user) {
+        return user.matchUserId(writer.getUserId());
     }
 
     public Long getId() {

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpSession;
 
-import static com.codessquad.qna.utils.HttpSessionUtils.getUserDtoFromSession;
+import static com.codessquad.qna.utils.HttpSessionUtils.getUserFromSession;
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler{
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler{
             case DUPLICATED_ID:
                 return "user/userSignup";
             case WRONG_PASSWORD:
-                model.addAttribute("user", getUserDtoFromSession(session));
+                model.addAttribute("user", getUserFromSession(session));
                 return "user/userUpdateForm";
             default:
                 return "redirect:/";

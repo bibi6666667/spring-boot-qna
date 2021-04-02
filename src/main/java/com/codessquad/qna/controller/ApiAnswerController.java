@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-import static com.codessquad.qna.utils.HttpSessionUtils.getUserDtoFromSession;
+import static com.codessquad.qna.utils.HttpSessionUtils.getUserFromSession;
 
 @RestController // 리턴 데이터를 json타입으로 변환해줌
 @RequestMapping("/api/questions/{questionId}/answers")
@@ -21,11 +21,11 @@ public class ApiAnswerController {
 
     @PostMapping("")
     public AnswerDto create(@PathVariable Long questionId, AnswerDto answerDto, HttpSession session) {
-        return answerService.save(questionId, answerDto, getUserDtoFromSession(session));
+        return answerService.save(questionId, answerDto, getUserFromSession(session));
     }
 
     @DeleteMapping("/{id}")
     public AnswerDto delete(@PathVariable Long questionId, @PathVariable Long id, HttpSession session) {
-        return answerService.delete(id, getUserDtoFromSession(session));
+        return answerService.delete(id, getUserFromSession(session));
     }
 }

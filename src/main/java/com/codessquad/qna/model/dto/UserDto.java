@@ -31,25 +31,7 @@ public class UserDto {
         if (userId == null || password == null || name == null || email == null) {
             throw new EntityNotCreateException();
         }
-        return new User(id, userId, password, name, email);
-    }
-
-    public void update(UserDto userDto) {
-        this.password = userDto.password;
-        this.name = userDto.name;
-        this.email = userDto.email;
-    }
-
-    public boolean matchId(Long id) {
-        return this.id.equals(id);
-    }
-
-    public boolean matchUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean matchPassword(String password) {
-        return this.password.equals(password);
+        return new User(userId, password, name, email);
     }
 
     public Long getId() {
