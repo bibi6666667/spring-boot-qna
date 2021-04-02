@@ -1,8 +1,13 @@
 package com.codessquad.qna.controller;
 
+import com.codessquad.qna.model.Question;
 import com.codessquad.qna.model.dto.QuestionDto;
 import com.codessquad.qna.service.QuestionService;
 import com.codessquad.qna.exception.ErrorMessage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +28,10 @@ public class QuestionController {
     }
 
     @GetMapping
-    public String viewMain(Model model) {
-        model.addAttribute("questions", questionService.findAll());
+    public String viewMain(Model model, @PageableDefault(size = 15, sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        System.out.println(pageable.getPageNumber());
+        Page<Question> questionPage = this.questionService.findAllQuestionByPage(pageable);
+        model.addAttribute("questions", questionPage.toList());
         return "index";
     }
 
