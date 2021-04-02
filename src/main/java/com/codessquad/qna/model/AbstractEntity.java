@@ -1,4 +1,4 @@
-package com.codessquad.qna.model.dto;
+package com.codessquad.qna.model;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AbstractDTO {
+public class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,9 +29,9 @@ public class AbstractDTO {
         this.id = id;
     }
 
-//    public LocalDateTime getDateTime() {
-//        return dateTime;
-//    }
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
@@ -41,7 +41,7 @@ public class AbstractDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbstractDTO that = (AbstractDTO) o;
+        AbstractEntity that = (AbstractEntity) o;
         return id.equals(that.id);
     }
 
