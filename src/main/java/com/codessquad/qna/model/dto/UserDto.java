@@ -10,7 +10,6 @@ public class UserDto {
 
     private String userId;
 
-    @JsonIgnore
     private String password;
 
     private String name;
@@ -22,7 +21,6 @@ public class UserDto {
     public UserDto(User user) {
         this.id = user.getId();
         this.userId = user.getUserId();
-        this.password = user.getPassword();
         this.name = user.getName();
         this.email = user.getEmail();
     }

@@ -21,7 +21,6 @@ public class QuestionDto {
 
     private String contents;
 
-    @JsonIgnore
     private List<Answer> answers;
 
     private boolean deleted;

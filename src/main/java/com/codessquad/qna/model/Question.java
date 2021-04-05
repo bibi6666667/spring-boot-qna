@@ -74,6 +74,12 @@ public class Question {
         return user.matchUserId(writer.getUserId());
     }
 
+    public int getAnswersCount() {
+        return (int) answers.stream()
+                .filter(answer -> !answer.isDeleted())
+                .count();
+    }
+
     public Long getId() {
         return id;
     }
