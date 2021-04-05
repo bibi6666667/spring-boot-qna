@@ -7,6 +7,8 @@ import com.codessquad.qna.model.User;
 import com.codessquad.qna.model.dto.QuestionDto;
 import com.codessquad.qna.repository.QuestionRepository;
 import com.codessquad.qna.exception.ErrorMessage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,11 +49,11 @@ public class QuestionService {
                 new EntityNotFoundException(ErrorMessage.QUESTION_NOT_FOUND));
     }
 
-    public List<QuestionDto> findAll() {
-        return questionRepository.findAllByDeletedFalse().stream()
-                .map(QuestionDto::new)
-                .collect(Collectors.toList());
-    }
+//    public List<QuestionDto> findAll() {
+//        return questionRepository.findAllByDeletedFalse().stream()
+//                .map(QuestionDto::new)
+//                .collect(Collectors.toList());
+//    }
 
     public Question verifyQuestion(Long id, User sessionedUser) {
         Question question = findById(id);
@@ -59,5 +61,12 @@ public class QuestionService {
             throw new IllegalUserAccessException();
         }
         return question;
+    }
+
+    public Page<Question> findAllQuestionByPage(Pageable pageable) {
+//        Page<Question> questionPage = this.questionRepository.findAllByDeletedFalse(pageable);
+//        int pageNumber = questionPage.getNumber(); //현재 페이지
+//        int totalPageNumber = questionPage.getTotalPages(); // 전체 페이지 수
+        return this.questionRepository.findAllByDeletedFalse(pageable);
     }
 }
